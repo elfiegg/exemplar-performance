@@ -25,7 +25,7 @@ Attention uses FlashAttention 4 varlen kernels, with selective K/V gather in the
 - An `HF_TOKEN` that can read `meta-models/Muse-Spark-Open-816B-A42B`
 - The environment prepared with the installer described in the [main README](../../../README.md)
 
-The installer clones TorchTitan, Dist-MoE, torch-remat, and attention-gym at the commits in `metadata.yaml`, and downloads the tokenizer at a pinned revision. The `container_setup` task then builds `$LLMB_INSTALL/images/muse-spark-torchtitan.sqsh`: the base image plus the wheels in `requirements.lock`, each verified by its sha256 hash, and the four source checkouts. `requirements.lock` pins a dated PyTorch nightly; keep a copy of that wheel, since nightly indexes are pruned.
+The installer clones TorchTitan, Dist-MoE, torch-remat, and attention-gym at the commits in `metadata.yaml`, and downloads the tokenizer at a pinned revision. The `container_setup` task then builds `$LLMB_INSTALL/images/muse-spark-torchtitan.sqsh` from the NGC PyTorch 26.11 image: it installs the wheels in `requirements.lock`, each verified by its sha256 hash, and then the four source checkouts. The image's PyTorch 2.15 predates FSDP2 APIs this recipe needs, so `requirements.lock` pins a PyTorch 2.16 nightly with its CUDA 13.4 libraries, Triton, and the kernel packages. Keep a copy of the nightly wheel, since nightly indexes are pruned.
 
 ## Run with `llmb-run`
 

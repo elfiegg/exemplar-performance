@@ -9,8 +9,8 @@ general:
 
 container:
   images:
-    # TODO: replace with the public PyTorch image that ships CUDA 13.4 for VR.
-    - url: 'BASE_IMAGE'
+    # install_to_container.sh replaces its PyTorch with the pinned nightly.
+    - url: 'nvcr.io#nvidia/pytorch:26.11-py3'
       name: 'muse-spark-torchtitan-base.sqsh'
 
 repositories:

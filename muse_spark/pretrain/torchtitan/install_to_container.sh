@@ -44,6 +44,9 @@ enroot start --root --rw \
         done
         python3 -m pip freeze > /opt/muse_spark_packages.txt
     "
+# enroot start leaves the mount points as empty, root-only directories, which
+# enroot export cannot read.
+rmdir "$ENROOT_DATA_PATH/muse-spark-build/opt/recipe" "$ENROOT_DATA_PATH/muse-spark-build/opt/workload"
 enroot export --output "$RUN_SQSH.partial" muse-spark-build
 mv "$RUN_SQSH.partial" "$RUN_SQSH"
 echo "Built $RUN_SQSH"
