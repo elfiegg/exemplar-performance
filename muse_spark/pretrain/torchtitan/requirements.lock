@@ -1,0 +1,47 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+
+# Exact wheels installed on top of the base image, with sha256 hashes.
+# torch is a dated nightly: keep a copy of the wheel, since nightly indexes are pruned.
+https://pypi.nvidia.com/cuda-toolkit/cuda_toolkit-13.4.3-py2.py3-none-any.whl#sha256=c56be2a9f538653ef5b1aa27787ed046ea08afa10bd55e95335a35fd196ac14e
+https://files.pythonhosted.org/packages/de/b2/6b19ce1392b81520c426d21bcf42ed22797a94df13b36bb51e96094a9179/cupti_python-13.4.0-cp312-cp312-manylinux_2_24_aarch64.manylinux_2_28_aarch64.whl#sha256=119878756def342f90eedd02121344e001d15026bf7a1be2c6b9a2d882b85aec
+https://files.pythonhosted.org/packages/b1/28/6e0452ec7c42934267be78aa4b2e7b1f886084e9750d8b1ba7ecff2c20f5/flash_attn_4-4.0.0b31-py3-none-any.whl#sha256=6eda5890b29e90fc46e19a47b4018effae7c042f75ee8aaaeebd3f56ccd82edf
+https://files.pythonhosted.org/packages/5f/48/1f85cee4b7b4f40b9b814b1febbc661bda6ced9649e410a0b74f6e415dd0/hatch_vcs-0.5.0-py3-none-any.whl#sha256=b49677dbdc597460cc22d01b27ab3696f5e16a21ecf2700fb01bc28e1f2a04a7
+https://files.pythonhosted.org/packages/32/64/4afe5dd77b2939a93e8c9513f8082dbd049ecba9c1484a379a0f6ae29d6b/hatchling-1.33.0-py3-none-any.whl#sha256=415290b84f464d2884303fca8974d38e7b85579069fab02a15db0828fbb1446d
+https://files.pythonhosted.org/packages/2a/e8/009c347feac27f8960605aa98d55ed263b5870dd4fd80b82fd1d00d5716c/httpcore2-2.16.2-py3-none-any.whl#sha256=16051ae2a42f776007543f32de9349a317b23d2cbb4e1456b4bac0e88b87419a
+https://files.pythonhosted.org/packages/77/de/8c4306a3d6aa2495111986addf33a9e561eff4c47552e4c4b9251160d0ad/httpx2-2.16.2-py3-none-any.whl#sha256=f05c13aade4c45dbf1c9060647a1058f0acad62398fad96e741269edb33d46f5
+https://files.pythonhosted.org/packages/b1/a8/9c0e83f11fd067d1973e8f801e78d0c2ea1186aef7cd6bf9e7c847c16836/jiter-0.19.0-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.whl#sha256=fcce75459e06cf811395581f6d256e2535d165ec4d223b809115a59b4ea6f398
+https://pypi.nvidia.com/nvidia-cublas/nvidia_cublas-13.8.1.7-py3-none-manylinux_2_27_aarch64.whl#sha256=803b9974cd7164a481d0b11c25826498d383d0ef0c372573bc6577a344ddf74e
+https://pypi.nvidia.com/nvidia-cuda-cccl/nvidia_cuda_cccl-13.3.5.0.6-py3-none-manylinux2014_aarch64.manylinux_2_17_aarch64.whl#sha256=6f30b8076b3e69951c459c94ae190bde51924b320076ebaec376d36848b4c76e
+https://pypi.nvidia.com/nvidia-cuda-cupti/nvidia_cuda_cupti-13.4.92-py3-none-manylinux_2_25_aarch64.whl#sha256=2358645c4607d4298dbe1d1989621ab246bc2efeb53e413be8eba922839946b1
+https://pypi.nvidia.com/nvidia-cuda-nvrtc/nvidia_cuda_nvrtc-13.4.92-py3-none-manylinux2014_aarch64.manylinux_2_17_aarch64.whl#sha256=24b9f5eccc6a5a19779038cf468aecb7cecfa8716269beaef5640bd989d21c28
+https://pypi.nvidia.com/nvidia-cuda-runtime/nvidia_cuda_runtime-13.4.92-py3-none-manylinux2014_aarch64.manylinux_2_17_aarch64.whl#sha256=bef071788589550ab02846fcbc732a2b88c2b16f2cd8a0f45d98e68e8c5fb0c8
+https://files.pythonhosted.org/packages/c5/1c/01e1dd3dec6ffe0baaff7e722b8946d867353d05a01301f128f1730fde0b/nvidia_cudnn_cu13-9.26.0.51-py3-none-manylinux_2_27_aarch64.whl#sha256=8e5b4f5eccff721416f70ecf4353172fc4d5cdd8ca869fe6f983a4a5b0147b20
+https://pypi.nvidia.com/nvidia-cufft/nvidia_cufft-12.4.0.43-py3-none-manylinux2014_aarch64.manylinux_2_17_aarch64.whl#sha256=3938644a5b594e06d396e02d6e52bdd84589b3c1f3a8a127a2704211c2abc441
+https://pypi.nvidia.com/nvidia-cufile/nvidia_cufile-1.19.1.55-py3-none-manylinux_2_27_aarch64.whl#sha256=56f00f0aad7b6da086f764cfefe8af3a36b05d4f0849f94717e5e25043a2071d
+https://pypi.nvidia.com/nvidia-cusolver/nvidia_cusolver-12.3.2.15-py3-none-manylinux_2_27_aarch64.whl#sha256=a2a87b02aa59a88220f6c2d28589decb167ba3a575dfe90ec490cac841fe788f
+https://pypi.nvidia.com/nvidia-cusparse/nvidia_cusparse-12.8.6.72-py3-none-manylinux2014_aarch64.manylinux_2_17_aarch64.whl#sha256=c3917c86fd419cbd42229b5cccb8bbe5200ed5b7dec3aa86d28e25c90a256e1b
+https://pypi.nvidia.com/nvidia-cusparselt-cu13/nvidia_cusparselt_cu13-0.8.1.post1-py3-none-manylinux2014_aarch64.whl#sha256=a09083b10c1290385107431c834d623580ff53df7dd5acd9b25f724e67fba8bf
+https://files.pythonhosted.org/packages/58/0a/c29c302036a06d27dd732588f3fd8ee89b1f7b0087e38c668ae7be8ff7b2/nvidia_nccl_cu13-2.32.3-py3-none-manylinux_2_27_aarch64.whl#sha256=a5bee92b2f4af218c109f8d221c3c9adcc752b94ae0ffcb0ed5abf9341a7724c
+https://pypi.nvidia.com/nvidia-nvjitlink/nvidia_nvjitlink-13.5.37-py3-none-manylinux2014_aarch64.manylinux_2_17_aarch64.whl#sha256=893f6f9a55b2720ed94913b5ba3332e972da8c78dfa2863d0244403dbd528ffc
+https://pypi.nvidia.com/nvidia-nvshmem-cu13/nvidia_nvshmem_cu13-3.7.2-py3-none-manylinux2014_aarch64.manylinux_2_17_aarch64.whl#sha256=0e748308b9e0a8a8d81859353f3e6c98fbe85a85f652a915a2ba60149a0bd124
+https://pypi.nvidia.com/nvidia-nvtx/nvidia_nvtx-13.4.92-py3-none-manylinux2014_aarch64.manylinux_2_17_aarch64.whl#sha256=d256c3a0f2f5e82de0a529112c630a74744f138b3ce97c6f468f65ca40463c98
+https://files.pythonhosted.org/packages/65/14/e6e4ee80bcca7c89377e4263ff9125ed5d6fe656f34215675669449fb3a2/openai-3.52.0-py3-none-any.whl#sha256=fc220b5f06d354e8f48ab38a64410ec1537957a47d6e584b77cee8c21b7cb84e
+https://files.pythonhosted.org/packages/d3/d2/ce6953ca87db9cae3e775024184da7d1c5cb88cead19a2d75b42f00a959c/openai_harmony-0.0.8-cp38-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl#sha256=e4f709815924ec325b9a890e6ab2bbb0ceec8e319a4e257328eb752cf36b2efc
+https://files.pythonhosted.org/packages/ab/ec/1d43ce0cd6b981a9381457e3b8f136cc8c7527fe13b3cb45c3b874a7cd49/prime_pydantic_config-0.4.3-py3-none-any.whl#sha256=13e8a0c39d0f88c3f75eb1df74a56198d1e907670e63e4918558a2e852b4e015
+https://files.pythonhosted.org/packages/60/c3/c9384da6992d64e0dffab551cda3d1e990de1a2685fcfcc16fc8e5a98b18/py_spy-0.4.3-py2.py3-none-manylinux2014_aarch64.manylinux_2_17_aarch64.whl#sha256=bbcec46930d464b3bfc142d6d02ade4dd8ad5627823263b3eff0280e80c7c132
+https://files.pythonhosted.org/packages/46/2a/f9697576603dae937727827505a6126a066affb227034e77e6f9068910da/pyelftools-0.33-py3-none-any.whl#sha256=f215ad5f47d3f1373a21496a6c9e0707c622840d0622f23ff7ce08678b020036
+https://files.pythonhosted.org/packages/73/d8/f5e56c38b286308d115a171e3c5c44f24e9d03980c3cfd22588df40261fa/quack_kernels-0.6.5-py3-none-any.whl#sha256=df1ddd31366c82eb9692fe087c671209189dcbde53c909c81a865d4ee66b158d
+https://files.pythonhosted.org/packages/1f/34/6b652ef2cece3b2356f11a78bb31a1d52eacad35b37c534401e1a607298c/renderers-0.1.12-py3-none-any.whl#sha256=023edfc5c17583d4b9824a1a822027d2f1d63be0d8e197137a2145e0f786f37d
+https://files.pythonhosted.org/packages/da/f5/54538a1f17ea753c42b0928dc2e62986d463f8c393340b9a1e602f2d4dd9/setuptools_scm-10.3.4-py3-none-any.whl#sha256=82f34c3e3084fc2b57d397200637cc13f2338004052d2fee47baa5f0e902464e
+https://files.pythonhosted.org/packages/e9/44/75a9c9421471a6c4805dbf2356f7c181a29c1879239abab1ea2cc8f38b40/sniffio-1.3.1-py3-none-any.whl#sha256=2f6da418d1f1e0fddd844478f41680e794e6051915791a034ff65e5f100525a2
+https://files.pythonhosted.org/packages/bf/85/6742b2ab85522c4560f81136c112d02bdb0bcf9e8f31bba523be9a0bbe21/spmd_types-0.3.1-py3-none-any.whl#sha256=782e8b7921b3589a358ac08534f242f97404ce7c49161061ea7188297987f30b
+https://files.pythonhosted.org/packages/0b/35/e9f47647c9e163bd1de30fe1a491669b7248cfc67b7404c35c009a701e1a/tiktoken-0.14.0-cp312-cp312-manylinux_2_28_aarch64.whl#sha256=7db45b98e94adf4173a5cd7422b150999a7ee11ff847783a14f6e1b80cc38cb6
+https://files.pythonhosted.org/packages/da/46/7d84138a60a8bd796825b2d38ebe92d0d16501ca57d501b7c5d677401bbc/tomlkit-0.15.2-py3-none-any.whl#sha256=05562412163a3037b94497385fb7f9204c637bc605af7a48199e41cf2272f437
+https://download-r2.pytorch.org/whl/nightly/cu134/torch-2.16.0.dev20261119%2Bcu134-cp312-cp312-manylinux_2_28_aarch64.whl#sha256=34546c19d5abde2844a2b2df24b38d50c2b18176c8572ff015e135ec6c4f7f1d
+https://files.pythonhosted.org/packages/02/90/306c38cf00cee9832ad6a6ee7847b72e7780806738dae159abef5760d441/torch_checkpointing-0.1.1-py3-none-any.whl#sha256=2e9e1c7754196bc73c9db00037d03aea63fc858f8080fae65b273c4a8d82f5ca
+https://download.pytorch.org/whl/nightly/cu134/torchao-0.19.0.dev20261103%2Bcu134-cp310-abi3-manylinux_2_24_aarch64.manylinux_2_28_aarch64.whl#sha256=bb80c8f0e4c2e155747d2784829ec802627ade872c8049b7b86e7f142b4e9e98
+https://download-r2.pytorch.org/whl/nightly/triton-3.9.0%2Bgitb7ddcf86-cp312-abi3-linux_aarch64.whl#sha256=9239eaafb1355ff11b2eae708b526526a0f86c9b555def028b66a2da301c92fb
+https://files.pythonhosted.org/packages/30/81/0da8afb52a71d0a4f2bd3152357b1a441e393b286374802b9d3addab4ab5/trove_classifiers-2026.9.21.13-py3-none-any.whl#sha256=8b1ff4f9c191b1040b71c37f1e445ab99732911e3cd91de52838453a854d7a17
+https://files.pythonhosted.org/packages/51/e9/3a7820be2bb0fe53b6bc9c3be26d3d1158004e4c3ab953aa6840b955b1e9/truststore-0.10.5-py3-none-any.whl#sha256=9aaaedaefaf06d8b206278cf8b5012bc897f485a874503501e12d776df78951c
+https://files.pythonhosted.org/packages/73/1d/ad4064bf12f4503bf61e65d74c93c523672776d25ee0a06aaf42ae09ef3f/vcs_versioning-2.6.0-py3-none-any.whl#sha256=f8bebd1302ebc12e67ceb30fc7dd698ec969414b6fa43b30c3f14ac9b1e72c41
