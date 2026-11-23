@@ -1,6 +1,6 @@
 # Muse Spark Open Pre-training with TorchTitan
 
-This recipe runs a Muse Spark Open 816B-A42B pre-training throughput benchmark with TorchTitan and Dist-MoE. It runs the TorchTitan recipe `muse_spark_816b_a42b_dist_moe_bf16_spmd_64_bf16_state_benchmark` for 100 steps.
+This recipe runs a Muse Spark Open 816B-A42B pre-training throughput benchmark with TorchTitan and Dist-MoE. It runs one of two TorchTitan recipes for 100 steps: `muse_spark_816b_a42b_dist_moe_bf16_spmd_64_bf16_state_benchmark` for BF16, or `muse_spark_816b_a42b_dist_moe_mxfp8_spmd_64_bf16_state_benchmark` for FP8.
 
 This is a throughput benchmark only. Forced balanced routing replaces the learned routers and the weights are randomly initialized, so the run does not train a usable model. Master weights and Adam state are BF16, which gives a higher loss than FP32 master weights.
 
@@ -8,15 +8,16 @@ This is a throughput benchmark only. Forced balanced routing replaces the learne
 
 - GPUs: VR, four GPUs per node, all in one NVLink domain
 - Scale: 64 GPUs
-- Precision: BF16 compute, BF16 master weights, gradients, Adam moments, and gradient reductions
+- Precision: BF16, or FP8 with MXFP8 experts and projections (inner attention and the LM head stay BF16). Both keep master weights, gradients, Adam moments, and gradient reductions in BF16.
 - Sequence length: 32768
 - Model size: `816b`
 
 | Precision | GPUs | SeqLen | TP  | PP  | CP  | EP  | DP  | MBS | GBS | GA  |
 | --------- | :--: | :----: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
 | BF16      |  64  | 32768  |  1  |  1  |  2  | 64  | 32  |  1  | 64  |  2  |
+| FP8       |  64  | 32768  |  1  |  1  |  2  | 64  | 32  |  1  | 64  |  2  |
 
-Attention uses FlashAttention 4 varlen kernels, with selective K/V gather in the sliding-window layers. Attention activations are offloaded to host memory, and a 112 GiB Dist-MoE activation slot saves the remaining MoE activations. The data is TorchTitan's `c4_test` fixture, packed into 32K-token rows.
+Attention uses FlashAttention 4 varlen kernels, with selective K/V gather in the sliding-window layers. Attention activations are offloaded to host memory, and a Dist-MoE activation slot saves the remaining MoE activations: 112 GiB for BF16 and 76 GiB for FP8. FP8 also keeps the gathered FSDP weights from forward for backward. The data is TorchTitan's `c4_test` fixture, packed into 32K-token rows.
 
 ## Prerequisites
 
@@ -32,7 +33,11 @@ The installer clones TorchTitan, Dist-MoE, torch-remat, and attention-gym at the
 From `$LLMB_INSTALL`, submit the benchmark:
 
 ```bash
+# BF16
 llmb-run submit -w pretrain_muse-spark -s 816b --dtype bf16 --scale 64
+
+# FP8 (MXFP8)
+llmb-run submit -w pretrain_muse-spark -s 816b --dtype fp8 --scale 64
 ```
 
 Set `gpu_type` in the selected `llmb-run` cluster configuration to `vr`. See the [`llmb-run` documentation](../../../cli/llmb-run/README.md) for cluster configuration and submission options.
@@ -57,6 +62,7 @@ Required environment variables:
 - `LLMB_EXPERIMENT_DIR`: directory for logs and TorchTitan output
 - `JOB_TOTAL_GPUS`: `64`
 - `GPU_TYPE`: `vr`
+- `DTYPE`: `bf16` (default) or `fp8`
 
 The launch script sets `NCCL_NVLS_ENABLE=1` for FSDP symmetric memory and `PYTORCH_ALLOC_CONF=pinned_max_round_threshold_mb:1`, so pinned host buffers keep their exact size instead of rounding up to a power of two.
 

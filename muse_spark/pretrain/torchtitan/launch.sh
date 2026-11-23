@@ -30,10 +30,15 @@ if [[ $GPU_TYPE != "vr" ]]; then
     echo "ERROR: Muse Spark TorchTitan supports VR only." >&2
     exit 1
 fi
-if [[ $DTYPE != "bf16" ]]; then
-    echo "ERROR: Muse Spark TorchTitan supports DTYPE=bf16 only." >&2
-    exit 1
-fi
+case $DTYPE in
+    bf16) RECIPE=muse_spark_816b_a42b_dist_moe_bf16_spmd_64_bf16_state_benchmark ;;
+    # MXFP8 experts and projections; inner attention and the LM head stay BF16.
+    fp8) RECIPE=muse_spark_816b_a42b_dist_moe_mxfp8_spmd_64_bf16_state_benchmark ;;
+    *)
+        echo "ERROR: Muse Spark TorchTitan supports DTYPE=bf16 or fp8." >&2
+        exit 1
+        ;;
+esac
 if [[ $JOB_TOTAL_GPUS -ne 64 ]]; then
     echo "ERROR: Muse Spark TorchTitan is validated at 64 GPUs." >&2
     exit 1
@@ -76,5 +81,5 @@ srun --nodes="$NUM_NODES" --ntasks-per-node=1 \
         --master-addr=$MASTER_ADDR --master-port=$MASTER_PORT \
         -m torchtitan.train \
         --module torchtitan_recipes.models.muse_spark \
-        --config muse_spark_816b_a42b_dist_moe_bf16_spmd_64_bf16_state_benchmark \
+        --config $RECIPE \
         --output-dir $LLMB_EXPERIMENT_DIR/trainer"

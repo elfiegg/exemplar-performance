@@ -16,7 +16,7 @@ container:
 repositories:
   torchtitan:
     url: "https://github.com/elfiegg/torchtitan.git"
-    commit: "2ff401e9dae1cfdc47982e085a482e08f3a0e015"
+    commit: "76d3287d787587c87b28841b4ff4de77bb4ef625"
   dist_moe:
     url: "https://github.com/meta-pytorch/dist_moe.git"
     commit: "b76e0e042b4e97731fec981e974d375eb8eeed8b"
@@ -79,5 +79,8 @@ run:
         - model_size: '816b'
           dtypes:
             bf16:
+              scales: [64]
+              exact_scales: true
+            fp8:
               scales: [64]
               exact_scales: true
