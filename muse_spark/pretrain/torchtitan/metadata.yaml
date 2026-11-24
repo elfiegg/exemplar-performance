@@ -26,8 +26,8 @@ repositories:
   # attention-gym 755691f merged with meta-pytorch/attention-gym#651.
   # TODO: switch to meta-pytorch/attention-gym once #651 merges.
   attention_gym:
-    url: "ATTENTION_GYM_REPOSITORY"
-    commit: "16f81f612dc57b8a67761a732be7f51cc42d6bf8"
+    url: "https://github.com/elfiegg/attention-gym.git"
+    commit: "b4bb8a98e42d562a18fa1402bee5f775a63e7c74"
 
 downloads:
   huggingface:

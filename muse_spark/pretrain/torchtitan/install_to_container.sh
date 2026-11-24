@@ -26,6 +26,7 @@ for source in "${SOURCES[@]}"; do
     [[ -d $LLMB_WORKLOAD/$source ]] || { echo "ERROR: checkout not found: $LLMB_WORKLOAD/$source" >&2; exit 1; }
 done
 
+mkdir -p "$LLMB_INSTALL/.cache"
 BUILD_DIR=$(mktemp -d "$LLMB_INSTALL/.cache/muse-spark-image-XXXXXX")
 trap 'rm -rf "$BUILD_DIR"' EXIT
 export ENROOT_DATA_PATH=$BUILD_DIR/data ENROOT_CACHE_PATH=$BUILD_DIR/cache ENROOT_TEMP_PATH=$BUILD_DIR/tmp

@@ -68,6 +68,8 @@ if [[ -n ${LLMB_CONTAINER_ENV:-} ]]; then
     CONTAINER_ENV+=",${LLMB_CONTAINER_ENV}"
 fi
 
+# The task shell reads these from its environment, so paths stay quoted.
+export NUM_NODES GPUS_PER_NODE MASTER_ADDR MASTER_PORT RECIPE LLMB_EXPERIMENT_DIR
 srun --nodes="$NUM_NODES" --ntasks-per-node=1 \
     --container-image="$IMAGE" \
     --container-mounts="$CONTAINER_MOUNTS" \
@@ -75,11 +77,11 @@ srun --nodes="$NUM_NODES" --ntasks-per-node=1 \
     --container-workdir="$TORCHTITAN" \
     --no-container-mount-home \
     --output="$LLMB_EXPERIMENT_DIR/log-muse-spark-torchtitan_%j.out" \
-    bash -c "torchrun \
-        --nnodes=$NUM_NODES --nproc-per-node=$GPUS_PER_NODE \
-        --node-rank=\$SLURM_NODEID \
-        --master-addr=$MASTER_ADDR --master-port=$MASTER_PORT \
+    bash -c 'torchrun \
+        --nnodes="$NUM_NODES" --nproc-per-node="$GPUS_PER_NODE" \
+        --node-rank="$SLURM_NODEID" \
+        --master-addr="$MASTER_ADDR" --master-port="$MASTER_PORT" \
         -m torchtitan.train \
         --module torchtitan_recipes.models.muse_spark \
-        --config $RECIPE \
-        --output-dir $LLMB_EXPERIMENT_DIR/trainer"
+        --config "$RECIPE" \
+        --output-dir "$LLMB_EXPERIMENT_DIR/trainer"'

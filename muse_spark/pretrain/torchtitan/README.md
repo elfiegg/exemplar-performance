@@ -62,7 +62,11 @@ Required environment variables:
 - `LLMB_EXPERIMENT_DIR`: directory for logs and TorchTitan output
 - `JOB_TOTAL_GPUS`: `64`
 - `GPU_TYPE`: `vr`
+
+Optional environment variables:
+
 - `DTYPE`: `bf16` (default) or `fp8`
+- `MASTER_PORT`: rendezvous port for `torchrun` (default `29500`)
 
 The launch script sets `NCCL_NVLS_ENABLE=1` for FSDP symmetric memory and `PYTORCH_ALLOC_CONF=pinned_max_round_threshold_mb:1`, so pinned host buffers keep their exact size instead of rounding up to a power of two.
 
