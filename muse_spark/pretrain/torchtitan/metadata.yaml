@@ -23,11 +23,12 @@ repositories:
   remat:
     url: "https://github.com/meta-pytorch/remat.git"
     commit: "71905a6e60123a9adadd4d0cd5acae4e3cb8ba88"
-  # attention-gym 755691f merged with meta-pytorch/attention-gym#651.
-  # TODO: switch to meta-pytorch/attention-gym once #651 merges.
+  # Head of meta-pytorch/attention-gym#651, which adds the selective K/V
+  # gather used in the sliding-window layers.
+  # TODO: pin the merge commit once #651 lands.
   attention_gym:
-    url: "https://github.com/elfiegg/attention-gym.git"
-    commit: "b4bb8a98e42d562a18fa1402bee5f775a63e7c74"
+    url: "https://github.com/meta-pytorch/attention-gym.git"
+    commit: "d08fdce601ef0ea6c925e970442b3dda26e79752"
 
 downloads:
   huggingface:
