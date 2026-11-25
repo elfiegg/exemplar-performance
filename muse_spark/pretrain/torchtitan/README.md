@@ -1,23 +1,28 @@
 # Muse Spark Open Pre-training with TorchTitan
 
-This recipe runs a Muse Spark Open 816B-A42B pre-training throughput benchmark with TorchTitan and Dist-MoE. It runs one of two TorchTitan recipes for 100 steps: `muse_spark_816b_a42b_dist_moe_bf16_spmd_64_bf16_state_benchmark` for BF16, or `muse_spark_816b_a42b_dist_moe_mxfp8_spmd_64_bf16_state_benchmark` for FP8.
+This recipe runs a Muse Spark Open 816B-A42B pre-training throughput benchmark with TorchTitan and Dist-MoE. It runs one of two TorchTitan recipes for 100 steps: `muse_spark_816b_a42b_dist_moe_bf16_spmd_64_bf16_state_benchmark` for BF16, or `muse_spark_816b_a42b_dist_moe_mxfp8_spmd_64_benchmark_cp1` for FP8.
 
-This is a throughput benchmark only. Forced balanced routing replaces the learned routers and the weights are randomly initialized, so the run does not train a usable model. Master weights and Adam state are BF16, which gives a higher loss than FP32 master weights.
+TorchTitan is pytorch/torchtitan#6346 (stacked on #6352) with #6369 and #6371 cherry-picked on top, and Dist-MoE is meta-pytorch/dist_moe#18. In both precisions, the pre-norms write the branch dtype directly (#6369), and the post-expert RMSNorm runs inside the Dist-MoE weighted-sum combine (#6371, dist_moe#18).
+
+This is a throughput benchmark only. Forced balanced routing replaces the learned routers and the weights are randomly initialized, so the run does not train a usable model. Master weights and gradients are FP32; Adam moments and gradient reductions are BF16.
 
 ## Supported configurations
 
 - GPUs: VR, four GPUs per node, all in one NVLink domain
 - Scale: 64 GPUs
-- Precision: BF16, or FP8 with MXFP8 experts and projections (inner attention and the LM head stay BF16). Both keep master weights, gradients, Adam moments, and gradient reductions in BF16.
+- Precision: BF16, or FP8 with MXFP8 experts, projections and LM head (inner attention stays BF16). Both keep FP32 master weights and gradients, and BF16 Adam moments and gradient reductions.
 - Sequence length: 32768
 - Model size: `816b`
 
 | Precision | GPUs | SeqLen | TP  | PP  | CP  | EP  | DP  | MBS | GBS | GA  |
 | --------- | :--: | :----: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
 | BF16      |  64  | 32768  |  1  |  1  |  2  | 64  | 32  |  1  | 64  |  2  |
-| FP8       |  64  | 32768  |  1  |  1  |  2  | 64  | 32  |  1  | 64  |  2  |
+| FP8       |  64  | 32768  |  1  |  1  |  1  | 64  | 64  |  1  | 64  |  1  |
 
-Attention uses FlashAttention 4 varlen kernels, with selective K/V gather in the sliding-window layers. Attention activations are offloaded to host memory, and a Dist-MoE activation slot saves the remaining MoE activations: 112 GiB for BF16 and 76 GiB for FP8. FP8 also keeps the gathered FSDP weights from forward for backward. The data is TorchTitan's `c4_test` fixture, packed into 32K-token rows.
+Attention uses FlashAttention 4 varlen kernels, with selective K/V gather in the sliding-window layers. The data is TorchTitan's `c4_test` fixture, packed into 32K-token rows.
+
+- BF16: attention activations are offloaded to host memory, and a 112 GiB Dist-MoE activation slot saves the remaining MoE activations.
+- FP8: one 32K sequence per GPU per step, FSDP reshards after forward, a 40 GiB Dist-MoE activation slot per live slot with the staged expert pipeline, and an MXFP8 LM head with FP32 output and a chunked FP32 loss. The router and the softcap/cross-entropy are compiled.
 
 ## Prerequisites
 
@@ -68,7 +73,7 @@ Optional environment variables:
 - `DTYPE`: `bf16` (default) or `fp8`
 - `MASTER_PORT`: rendezvous port for `torchrun` (default `29500`)
 
-The launch script sets `NCCL_NVLS_ENABLE=1` for FSDP symmetric memory and `PYTORCH_ALLOC_CONF=pinned_max_round_threshold_mb:1`, so pinned host buffers keep their exact size instead of rounding up to a power of two.
+The launch script sets `NCCL_NVLS_ENABLE=1` for FSDP symmetric memory and `PYTORCH_ALLOC_CONF=pinned_max_round_threshold_mb:1`, so pinned host buffers keep their exact size instead of rounding up to a power of two. For FP8 it also sets `NCCL_MIN_CTAS=1` and `NCCL_MAX_CTAS=8`. `torchrun --numa-binding=node` binds each rank to the CPUs of its GPU's NUMA node.
 
 ## Results
 

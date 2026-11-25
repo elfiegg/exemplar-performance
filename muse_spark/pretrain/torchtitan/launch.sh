@@ -32,8 +32,8 @@ if [[ $GPU_TYPE != "vr" ]]; then
 fi
 case $DTYPE in
     bf16) RECIPE=muse_spark_816b_a42b_dist_moe_bf16_spmd_64_bf16_state_benchmark ;;
-    # MXFP8 experts and projections; inner attention and the LM head stay BF16.
-    fp8) RECIPE=muse_spark_816b_a42b_dist_moe_mxfp8_spmd_64_bf16_state_benchmark ;;
+    # MXFP8 experts, projections and LM head; inner attention stays BF16.
+    fp8) RECIPE=muse_spark_816b_a42b_dist_moe_mxfp8_spmd_64_benchmark_cp1 ;;
     *)
         echo "ERROR: Muse Spark TorchTitan supports DTYPE=bf16 or fp8." >&2
         exit 1
@@ -64,6 +64,12 @@ fi
 CONTAINER_ENV=NCCL_NVLS_ENABLE,PYTORCH_ALLOC_CONF
 export NCCL_NVLS_ENABLE=1
 export PYTORCH_ALLOC_CONF=pinned_max_round_threshold_mb:1
+# The MXFP8 CP1 recipe was measured with NCCL kernels capped at 8 CTAs, which
+# leaves SMs for the overlapped compute. Dist-MoE barriers are not affected.
+if [[ $DTYPE == "fp8" ]]; then
+    CONTAINER_ENV+=,NCCL_MIN_CTAS,NCCL_MAX_CTAS
+    export NCCL_MIN_CTAS=1 NCCL_MAX_CTAS=8
+fi
 if [[ -n ${LLMB_CONTAINER_ENV:-} ]]; then
     CONTAINER_ENV+=",${LLMB_CONTAINER_ENV}"
 fi
@@ -80,6 +86,7 @@ srun --nodes="$NUM_NODES" --ntasks-per-node=1 \
     bash -c 'torchrun \
         --nnodes="$NUM_NODES" --nproc-per-node="$GPUS_PER_NODE" \
         --node-rank="$SLURM_NODEID" \
+        --numa-binding=node \
         --master-addr="$MASTER_ADDR" --master-port="$MASTER_PORT" \
         -m torchtitan.train \
         --module torchtitan_recipes.models.muse_spark \

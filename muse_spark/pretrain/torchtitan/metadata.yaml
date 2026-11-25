@@ -14,12 +14,18 @@ container:
       name: 'muse-spark-torchtitan-base.sqsh'
 
 repositories:
+  # pytorch/torchtitan#6346 (stacked on #6352) with #6369 and #6371
+  # cherry-picked on top.
+  # TODO: pin upstream main once these PRs land.
   torchtitan:
     url: "https://github.com/elfiegg/torchtitan.git"
-    commit: "76d3287d787587c87b28841b4ff4de77bb4ef625"
+    commit: "03b8f376fd40e4720df82734185faab3c7a0f4f1"
+  # Head of meta-pytorch/dist_moe#18, which adds the fused input-scaled
+  # RMSNorm that #6371 uses.
+  # TODO: pin upstream main once #18 lands.
   dist_moe:
-    url: "https://github.com/meta-pytorch/dist_moe.git"
-    commit: "b76e0e042b4e97731fec981e974d375eb8eeed8b"
+    url: "https://github.com/elfiegg/DistMoE.git"
+    commit: "bea783f9585afbe1aaf087650acf54465a918af6"
   remat:
     url: "https://github.com/meta-pytorch/remat.git"
     commit: "71905a6e60123a9adadd4d0cd5acae4e3cb8ba88"
